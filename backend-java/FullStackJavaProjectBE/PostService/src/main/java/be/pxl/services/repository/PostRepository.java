@@ -8,4 +8,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findPostByInConceptAndAuthor(boolean inConcept, String author);
+
+    List<Post> findPostByInConcept(boolean inConcept);
 }

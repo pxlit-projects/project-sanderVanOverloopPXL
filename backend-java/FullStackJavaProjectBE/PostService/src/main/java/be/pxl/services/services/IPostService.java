@@ -1,6 +1,7 @@
 package be.pxl.services.services;
 
 import be.pxl.services.controller.Requests.EditPostRequest;
+import be.pxl.services.controller.Requests.FilterPostsRequest;
 import be.pxl.services.controller.Requests.PostRequest;
 import be.pxl.services.controller.dto.PostDTO;
 
@@ -16,6 +17,12 @@ public interface IPostService {
     void updatePost(long id, @Valid EditPostRequest request, String userRole, String user);
 
     PostDTO getPostById(long id);
+
+    List<PostDTO> getAllPublicPosts();
+
+    List<PostDTO> filterPosts(FilterPostsRequest request);
 }
+
+
 
 

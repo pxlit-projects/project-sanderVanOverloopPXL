@@ -3,6 +3,7 @@ package be.pxl.services.services;
 import be.pxl.services.Exceptions.PostsException;
 import be.pxl.services.Exceptions.UnautherizedException;
 import be.pxl.services.controller.Requests.EditPostRequest;
+import be.pxl.services.controller.Requests.FilterPostsRequest;
 import be.pxl.services.controller.Requests.PostRequest;
 import be.pxl.services.controller.dto.PostDTO;
 import be.pxl.services.domain.Post;
@@ -67,4 +68,72 @@ public class PostService implements IPostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new PostsException("Post not found"));
         return new PostDTO(post.getId(), post.getTitle(), post.getContent(), post.getAuthor(), post.getDateCreated(), post.isInConcept());
     }
+
+    @Override
+    public List<PostDTO> getAllPublicPosts() {
+        List<Post> posts = postRepository.findPostByInConcept(false);
+        return posts.stream()
+                .map(post -> new PostDTO(post.getId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getAuthor(),
+                        post.getDateCreated(),
+                        post.isInConcept()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDTO> filterPosts(FilterPostsRequest request) {
+        List<Post> allPost = postRepository.findAll();
+        if (allPost.isEmpty()) {
+            throw new PostsException("No posts in the database");
+        }
+
+        if (request.getContent() != null && !request.getContent().isEmpty()) {
+            return allPost.stream()
+                    .filter(post -> post.getContent().contains(request.getContent()))
+                    .map(post -> new PostDTO(post.getId(),
+                            post.getTitle(),
+                            post.getContent(),
+                            post.getAuthor(),
+                            post.getDateCreated(),
+                            post.isInConcept()))
+                    .collect(Collectors.toList());
+        }
+
+        if (request.getAuthor() != null && !request.getAuthor().isEmpty()){
+            return allPost.stream()
+                    .filter(post -> post.getAuthor().contains(request.getAuthor()))
+                    .map(post -> new PostDTO(post.getId(),
+                            post.getTitle(),
+                            post.getContent(),
+                            post.getAuthor(),
+                            post.getDateCreated(),
+                            post.isInConcept()))
+                    .collect(Collectors.toList());
+        }
+
+        if (request.getDate() != null){
+            return allPost.stream()
+                    .filter(post -> !post.getDateCreated().isBefore(request.getDate()))
+                    .map(post -> new PostDTO(post.getId(),
+                            post.getTitle(),
+                            post.getContent(),
+                            post.getAuthor(),
+                            post.getDateCreated(),
+                            post.isInConcept()))
+                    .collect(Collectors.toList());
+        }
+
+        return allPost.stream()
+                .map(post -> new PostDTO(post.getId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getAuthor(),
+                        post.getDateCreated(),
+                        post.isInConcept()))
+                .collect(Collectors.toList());
+    }
+
+
 }

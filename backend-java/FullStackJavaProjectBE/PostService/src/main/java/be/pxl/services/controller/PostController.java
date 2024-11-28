@@ -1,8 +1,10 @@
 package be.pxl.services.controller;
 
 import be.pxl.services.controller.Requests.EditPostRequest;
+import be.pxl.services.controller.Requests.FilterPostsRequest;
 import be.pxl.services.controller.Requests.PostRequest;
 import be.pxl.services.controller.dto.PostDTO;
+import be.pxl.services.domain.Post;
 import be.pxl.services.services.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,16 @@ public class PostController  {
     @GetMapping("/{id}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable long id) {
         return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/allpublic")
+    public ResponseEntity<List<PostDTO>> getAllPublicPosts() {
+        return new ResponseEntity<>(postService.getAllPublicPosts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<PostDTO>> filterPosts(@RequestBody FilterPostsRequest request) {
+        return new ResponseEntity<>(postService.filterPosts(request), HttpStatus.OK);
     }
 
 }
