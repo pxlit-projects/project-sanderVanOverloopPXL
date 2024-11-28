@@ -1,44 +1,20 @@
 version: '3'
 
 services:
-  employeeservice-db:
+  postservice-db:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: 'employeeservice_db'
+      MYSQL_DATABASE: 'postservice_db'
       MYSQL_USER: 'ikbeneenstudent'
       MYSQL_PASSWORD: 'ventieldopje24'
       MYSQL_ROOT_PASSWORD: 'ventieldopje24'
     ports:
       - '3306:3306'
     volumes:
-      - employeeservice-db:/var/lib/mysql
+      - postservice-db:/var/lib/mysql
 
-  departmentservice-db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'departmentservice_db'
-      MYSQL_USER: 'ikbeneenstudent'
-      MYSQL_PASSWORD: 'ventieldopje24'
-      MYSQL_ROOT_PASSWORD: 'ventieldopje24'
-    ports:
-      - '3307:3306'
-    volumes:
-      - departmentservice-db:/var/lib/mysql
 
-  organizationservice-db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'organizationservice_db'
-      MYSQL_USER: 'ikbeneenstudent'
-      MYSQL_PASSWORD: 'ventieldopje24'
-      MYSQL_ROOT_PASSWORD: 'ventieldopje24'
-    ports:
-      - '3308:3306'
-    volumes:
-      - organizationservice-db:/var/lib/mysql
 
   rabbitmq:
     image: "rabbitmq:3-management"
@@ -51,9 +27,7 @@ services:
 
 
 volumes:
-  employeeservice-db:
-  departmentservice-db:
-  organizationservice-db:
+  postservice-db:
   rabbitmq-data:
 
 
