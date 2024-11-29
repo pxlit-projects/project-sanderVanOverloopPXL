@@ -1,4 +1,4 @@
-package be.pxl.services.controller.dto;
+package be.pxl.services.controller.Requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data //  provides getters, setters, and other utility methods
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDTO {
+public class ApplyForReviewRequest {
     private long id;
     private long authorId;
     private String title;

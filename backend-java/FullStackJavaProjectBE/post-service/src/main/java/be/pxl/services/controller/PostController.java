@@ -1,5 +1,6 @@
 package be.pxl.services.controller;
 
+import be.pxl.services.controller.Requests.ApplyForReviewRequest;
 import be.pxl.services.controller.Requests.EditPostRequest;
 import be.pxl.services.controller.Requests.FilterPostsRequest;
 import be.pxl.services.controller.Requests.PostRequest;
@@ -23,19 +24,19 @@ public class PostController  {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<Void> addPost(@Valid @RequestBody PostRequest request, @RequestHeader("Role") String userRole, @RequestHeader("User") String username) {
-        postService.addPost(request, userRole, username);
+    public ResponseEntity<Void> addPost(@Valid @RequestBody PostRequest request, @RequestHeader("Role") String userRole, @RequestHeader("User") String username, @RequestHeader("Userid") String userId) {
+        postService.addPost(request, userRole, username,userId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/inConcept")
-    public ResponseEntity<List<PostDTO>> getPostsInConcept(@RequestHeader("User") String user, @RequestHeader("Role") String userRole) {
-        return new ResponseEntity<>(postService.getPostsInConcept(user, userRole), HttpStatus.OK);
+    public ResponseEntity<List<PostDTO>> getPostsInConcept(@RequestHeader("User") String user, @RequestHeader("Role") String userRole,@RequestHeader("Userid") String userId) {
+        return new ResponseEntity<>(postService.getPostsInConcept(user, userRole, userId), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable long id, @Valid @RequestBody EditPostRequest request, @RequestHeader("Role") String userRole, @RequestHeader("User") String user) {
-        postService.updatePost(id, request, userRole, user);
+    public ResponseEntity<Void> updatePost(@PathVariable long id, @Valid @RequestBody EditPostRequest request, @RequestHeader("Role") String userRole, @RequestHeader("User") String user,@RequestHeader("Userid") String userId) {
+        postService.updatePost(id, request, userRole, user, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -52,6 +53,12 @@ public class PostController  {
     @GetMapping("/filter")
     public ResponseEntity<List<PostDTO>> filterPosts(@RequestBody FilterPostsRequest request) {
         return new ResponseEntity<>(postService.filterPosts(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<PostDTO> sendForReview(@RequestBody ApplyForReviewRequest request, @RequestHeader("Role") String userRole, @RequestHeader("User") String user, @RequestHeader("Userid") String userId) {
+        postService.sendForReview(request, userRole, user, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

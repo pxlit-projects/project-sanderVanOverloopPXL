@@ -5,12 +5,13 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   private accounts = [
-    { username: 'admin', password: 'admin123', role: 'editor' },
-    { username: 'user', password: 'user123', role: 'user' },
+    { userId: 1, username: 'admin', password: 'admin123', role: 'editor' },
+    { userId: 2, username: 'user', password: 'user123', role: 'user' },
   ];
 
   private currentUser: string | null = null;
   private currentRole: string = 'user';
+  private currentUserId: number | null = null;
 
   constructor() {}
 
@@ -22,11 +23,13 @@ export class AuthService {
     if (account) {
       this.currentUser = account.username;
       this.currentRole = account.role;
+      this.currentUserId = account.userId;
 
-      // Set authToken and username in localStorage to simulate authentication
+      // Set authToken, userId, and username in localStorage to simulate authentication
       localStorage.setItem('authToken', 'true');
       localStorage.setItem('userRole', account.role);
-      localStorage.setItem('currentUser', account.username); // Store the username
+      localStorage.setItem('currentUser', account.username);
+      localStorage.setItem('userId', account.userId.toString());
 
       return true;
     }
@@ -37,11 +40,13 @@ export class AuthService {
   logout(): void {
     this.currentUser = null;
     this.currentRole = 'user';
+    this.currentUserId = null;
 
-    // Clear authToken and username from localStorage
+    // Clear authToken, userId, and username from localStorage
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
-    localStorage.removeItem('currentUser'); // Clear the username
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userId');
   }
 
   getUsername(): string | null {
@@ -50,6 +55,11 @@ export class AuthService {
 
   getRole(): string {
     return localStorage.getItem('userRole') || 'user';
+  }
+
+  getUserId(): number | null {
+    const userId = localStorage.getItem('userId');
+    return userId ? parseInt(userId, 10) : null;
   }
 
   isAuthenticated(): boolean {
