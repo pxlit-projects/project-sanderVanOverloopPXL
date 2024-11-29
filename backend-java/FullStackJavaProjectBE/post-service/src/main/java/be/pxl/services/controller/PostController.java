@@ -1,11 +1,7 @@
 package be.pxl.services.controller;
 
-import be.pxl.services.controller.Requests.ApplyForReviewRequest;
-import be.pxl.services.controller.Requests.EditPostRequest;
-import be.pxl.services.controller.Requests.FilterPostsRequest;
-import be.pxl.services.controller.Requests.PostRequest;
+import be.pxl.services.controller.Requests.*;
 import be.pxl.services.controller.dto.PostDTO;
-import be.pxl.services.domain.Post;
 import be.pxl.services.services.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

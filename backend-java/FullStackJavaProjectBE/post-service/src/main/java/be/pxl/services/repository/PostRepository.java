@@ -10,5 +10,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostByInConceptAndAuthorId(boolean inConcept, long authorId);
 
     List<Post> findPostByInConcept(boolean inConcept);
-    List<Post> findPostByIsPublic(boolean isPublic);
+
+    List<Post> findPostByisApproved(boolean isApproved);
 }

@@ -1,9 +1,6 @@
 package be.pxl.services.services;
 
-import be.pxl.services.controller.Requests.ApplyForReviewRequest;
-import be.pxl.services.controller.Requests.EditPostRequest;
-import be.pxl.services.controller.Requests.FilterPostsRequest;
-import be.pxl.services.controller.Requests.PostRequest;
+import be.pxl.services.controller.Requests.*;
 import be.pxl.services.controller.dto.PostDTO;
 
 import javax.validation.Valid;
