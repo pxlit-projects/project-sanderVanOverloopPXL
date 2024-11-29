@@ -1,7 +1,7 @@
+// src/app/test/testpage/testpage.component.ts
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../../environments/environment';
+import { PostService } from '../../services/post-service.service';
 
 @Component({
   selector: 'app-testpage',
@@ -21,7 +21,7 @@ export class TestpageComponent implements OnInit {
     inConcept: false
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private postService: PostService) {}
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('userRole');
@@ -29,13 +29,7 @@ export class TestpageComponent implements OnInit {
   }
 
   submitPost(): void {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Role': this.userRole || '',
-      'User': this.username || ''
-    });
-
-    this.http.post(`${environment.apiUrl}/post`, this.post, { headers })
+    this.postService.createPost(this.post, this.userRole || '', this.username || '')
       .subscribe(response => {
         console.log('Post created successfully', response);
       }, error => {

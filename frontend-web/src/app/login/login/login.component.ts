@@ -14,17 +14,16 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
   user: string = '';
   password: string = '';
+  errorMessage: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   handleLogin(): void {
     const success = this.authService.login(this.user, this.password);
     if (success) {
-      // Redirect to the testpage
       this.router.navigate(['/testpage']);
     } else {
-      // Handle login failure
-      console.log('Login failed');
+      this.errorMessage = 'Login failed. Please check your credentials and try again.';
     }
   }
 }

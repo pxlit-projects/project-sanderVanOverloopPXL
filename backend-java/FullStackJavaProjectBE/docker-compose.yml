@@ -14,6 +14,32 @@ services:
     volumes:
       - postservice-db:/var/lib/mysql
 
+  reviewservice-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'reviewservice_db'
+      MYSQL_USER: 'ikbeneenstudent'
+      MYSQL_PASSWORD: 'ventieldopje24'
+      MYSQL_ROOT_PASSWORD: 'ventieldopje24'
+    ports:
+      - '3307:3306'
+    volumes:
+      - reviewservice-db:/var/lib/mysql
+
+  commentservice-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'commentservice_db'
+      MYSQL_USER: 'ikbeneenstudent'
+      MYSQL_PASSWORD: 'ventieldopje24'
+      MYSQL_ROOT_PASSWORD: 'ventieldopje24'
+    ports:
+      - '3308:3306'
+    volumes:
+      - commentservice-db:/var/lib/mysql
+
 
 
   rabbitmq:
@@ -28,6 +54,8 @@ services:
 
 volumes:
   postservice-db:
+  reviewservice-db:
+  commentservice-db:
   rabbitmq-data:
 
 
