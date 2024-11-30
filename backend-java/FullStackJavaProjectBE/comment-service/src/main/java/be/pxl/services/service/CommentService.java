@@ -4,6 +4,7 @@ import be.pxl.services.controller.request.AddCommentRequest;
 import be.pxl.services.domain.Comment;
 import be.pxl.services.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,12 +16,14 @@ public class CommentService implements ICommentService{
     private final CommentRepository commentRepository;
 
 
+
     @Override
     public void addComment(AddCommentRequest request, String userRole, String username, String userId) {
 
         if (!userRole.equals("user") && !userRole.equals("author")) {
             throw new RuntimeException("User is not authorized to add a comment");
         }
+
 
 
 
@@ -31,6 +34,11 @@ public class CommentService implements ICommentService{
                 .usernameMadeBy(username)
                 .dateCreated(LocalDate.now())
                 .build();
+
+
+
+
+
         commentRepository.save(comment);
     }
 }
