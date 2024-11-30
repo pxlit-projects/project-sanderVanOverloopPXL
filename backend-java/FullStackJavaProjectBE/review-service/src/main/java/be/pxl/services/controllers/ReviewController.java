@@ -1,6 +1,8 @@
 package be.pxl.services.controllers;
 
+import be.pxl.services.controllers.dto.NotificationDTO;
 import be.pxl.services.controllers.dto.PostDTO;
+import be.pxl.services.domain.Notification;
 import be.pxl.services.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,5 +24,10 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<List<PostDTO>> getReviewsInWait(@RequestHeader("Role") String userRole, @RequestHeader("User") String user, @RequestHeader("Userid") String userId) {
         return new ResponseEntity<List<PostDTO>>(reviewService.getReviewsInWait(userRole,user,userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/notification/{id}")
+    public ResponseEntity<List<NotificationDTO>> getNotification(@RequestHeader("Role") String userRole, @RequestHeader("User") String user, @RequestHeader("Userid") String userId) {
+        return new ResponseEntity<List<NotificationDTO>>(reviewService.getNotification(userRole,user,userId), HttpStatus.OK);
     }
 }

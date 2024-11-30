@@ -25,7 +25,7 @@ public class PostService implements IPostService {
 
     @Override
     public void addPost(PostRequest post, String userRole, String user, String userId) {
-        if (!userRole.equals("editor")) {
+        if (!userRole.equals("author")) {
             throw new PostsException("User is not authorized to add a post");
         }
         Post newPost = new Post();
@@ -51,7 +51,7 @@ public class PostService implements IPostService {
 
     @Override
     public void updatePost(long id, @Valid EditPostRequest request, String userRole, String user, String userId) {
-        if (!userRole.equals("editor")) {
+        if (!userRole.equals("author")) {
             throw new PostsException("User is not authorized to update a post");
         }
         Post post = postRepository.findById(id).orElseThrow(() -> new PostsException("Post not found"));
@@ -92,7 +92,7 @@ public class PostService implements IPostService {
 
     @Override
     public void sendForReview(ApplyForReviewRequest request, String userRole, String user, String userId) {
-        if (!userRole.equals("editor")) {
+        if (!userRole.equals("author")) {
             throw new PostsException("User is not authorized to send a post for review");
         }
         Post post = postRepository.findById(request.getId()).orElseThrow(() -> new PostsException("Post not found"));
@@ -126,6 +126,7 @@ public class PostService implements IPostService {
 
 
         postRepository.save(oldPost);
+
     }
 
     private PostDTO mapToPostDTO(Post post) {
