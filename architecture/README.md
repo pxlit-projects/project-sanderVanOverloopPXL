@@ -21,7 +21,6 @@ De API Gateway is het toegangspunt voor alle inkomende verzoeken van de frontend
 
 ### OpenFeign
 Voor synchrone communicatie tussen de microservices:
-- **ReviewService ↔ CommentService**: ReviewService haalt reacties op bij een afgekeurde review, zodat de redacteur weet welke wijzigingen nodig zijn.
 - **PostService ↔ CommentService**: Directe communicatie om reacties bij een post te plaatsen.
 
 ### Message Bus
