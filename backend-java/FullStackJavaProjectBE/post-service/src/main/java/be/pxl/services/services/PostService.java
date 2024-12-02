@@ -2,9 +2,12 @@ package be.pxl.services.services;
 
 import be.pxl.services.Exceptions.PostsException;
 import be.pxl.services.controller.Requests.*;
+import be.pxl.services.controller.dto.NotificationDTO;
 import be.pxl.services.controller.dto.PostDTO;
+import be.pxl.services.domain.Notification;
 import be.pxl.services.domain.Post;
 import be.pxl.services.domain.ReviewStatus;
+import be.pxl.services.repository.NotificationRepository;
 import be.pxl.services.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,6 +25,7 @@ public class PostService implements IPostService {
 
     private final PostRepository postRepository;
     private final RabbitTemplate rabbitTemplate;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public void addPost(PostRequest post, String userRole, String user, String userId) {
@@ -34,6 +38,7 @@ public class PostService implements IPostService {
         newPost.setAuthor(user);
         newPost.setDateCreated(post.getDateCreated());
         newPost.setAuthorId(Long.parseLong(userId));
+        newPost.setInConcept(post.isInConcept()); // Set the in_concept field
         postRepository.save(newPost);
     }
 
@@ -115,6 +120,34 @@ public class PostService implements IPostService {
         rabbitTemplate.convertAndSend("postQueue1", requestBus);
     }
 
+    @Override
+    public void addNotification(AddNotificationRequest request, String userRole) {
+        if (!userRole.equals("reviewer")) {
+            throw new PostsException("User is not authorized to add a notification");
+        }
+        Notification notification = new Notification();
+        notification.setAuthorId(request.getAuthorId());
+        notification.setContent(request.getContent());
+        notificationRepository.save(notification);
+        System.out.println("Notification added " + notification);
+        // Add logging
+        System.out.println("AddNotificationRequest: " + request);
+        System.out.println("UserRole: " + userRole);
+    }
+
+    @Override
+    public List<NotificationDTO> getNotifications(String userId, String userRole) {
+        if (!userRole.equals("author") && !userRole.equals("user")) {
+            throw new PostsException("User is not authorized to get a notification");
+        }
+
+        List<Notification> notifications = notificationRepository.findNotificationsByAuthorId(Long.parseLong(userId));
+        return notifications.stream()
+                .map(this::mapToNotificationDTO)
+                .collect(Collectors.toList());
+
+    }
+
     @RabbitListener(queues = "reviewQueue1")
     public void receiveReview(ReviewRequest requestBus) {
 
@@ -142,6 +175,12 @@ public class PostService implements IPostService {
                 post.isInReview(),
                 post.getRejectedReason()
         );
+    }
+
+    private NotificationDTO mapToNotificationDTO(Notification notification) {
+        NotificationDTO dto = new NotificationDTO();
+        dto.setContent(notification.getContent());
+        return dto;
     }
 
 

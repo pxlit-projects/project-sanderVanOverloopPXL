@@ -1,4 +1,4 @@
-package be.pxl.services.controllers.dto;
+package be.pxl.services.controller.Requests;
 
 
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data //  provides getters, setters, and other utility methods
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationDTO {
-    private String message;
+public class AddNotificationRequest {
+    private long authorId;
+    private String content;
 }

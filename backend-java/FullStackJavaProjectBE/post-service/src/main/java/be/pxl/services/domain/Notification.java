@@ -1,5 +1,6 @@
 package be.pxl.services.domain;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,6 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String message;
-    private long userId;
-
+    private long authorId;
+    private String content;
 }

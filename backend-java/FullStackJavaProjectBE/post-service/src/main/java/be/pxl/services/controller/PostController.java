@@ -1,6 +1,7 @@
 package be.pxl.services.controller;
 
 import be.pxl.services.controller.Requests.*;
+import be.pxl.services.controller.dto.NotificationDTO;
 import be.pxl.services.controller.dto.PostDTO;
 import be.pxl.services.services.PostService;
 import jakarta.validation.Valid;
@@ -55,6 +56,17 @@ public class PostController  {
     public ResponseEntity<PostDTO> sendForReview(@RequestBody ApplyForReviewRequest request, @RequestHeader("Role") String userRole, @RequestHeader("User") String user, @RequestHeader("Userid") String userId) {
         postService.sendForReview(request, userRole, user, userId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/add/notification")
+    public ResponseEntity<Void> addNotification(@RequestBody AddNotificationRequest request, @RequestHeader("Role") String userRole) {
+        postService.addNotification(request, userRole);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<List<NotificationDTO>> getNotifications(@RequestHeader("Userid") String userId, @RequestHeader("Role") String userRole) {
+        return new ResponseEntity<List<NotificationDTO>>(postService.getNotifications(userId, userRole), HttpStatus.OK);
     }
 
 }

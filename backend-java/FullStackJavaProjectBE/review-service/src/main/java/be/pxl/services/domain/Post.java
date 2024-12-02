@@ -24,8 +24,8 @@ public class Post {
     private String content;
     private String author;
     private LocalDate dateCreated;
-    private boolean inConcept;
+    private boolean inConcept = true;
     private boolean isApproved = false;
-    private boolean inReview;
+    private boolean inReview = false;
     private String rejectedReason = "";
 }

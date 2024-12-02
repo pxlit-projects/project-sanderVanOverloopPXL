@@ -1,6 +1,7 @@
 package be.pxl.services.services;
 
 import be.pxl.services.controller.Requests.*;
+import be.pxl.services.controller.dto.NotificationDTO;
 import be.pxl.services.controller.dto.PostDTO;
 
 import javax.validation.Valid;
@@ -22,7 +23,12 @@ public interface IPostService {
 
     void sendForReview(ApplyForReviewRequest request, String userRole, String user, String userId);
 
+    void addNotification(AddNotificationRequest request, String userRole);
+
+    List<NotificationDTO> getNotifications(String userId, String userRole);
+
 }
+
 
 
 
