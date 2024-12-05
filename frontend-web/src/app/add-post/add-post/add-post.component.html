@@ -1,0 +1,29 @@
+<div class="add-post-form p-4">
+  <h1 class="text-2xl font-bold mb-4">Add New Post</h1>
+  <form [formGroup]="addPostForm" (ngSubmit)="addPost()">
+    <div class="form-section mb-4">
+      <h2 class="text-xl font-semibold mb-2">Post Details</h2>
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title" required style="color: #4a148c;">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Content</mat-label>
+        <textarea matInput formControlName="content" required style="color: #4a148c;"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="form-section mb-4">
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Date Created</mat-label>
+        <input matInput type="datetime-local" formControlName="dateCreated" required [value]="currentDate" style="color: #4a148c;" readonly>
+      </mat-form-field>
+      <mat-checkbox formControlName="inConcept" [checked]="true" [disabled]="true">In Concept</mat-checkbox>
+    </div>
+    <button mat-raised-button color="primary" type="submit" [disabled]="userRole !== 'author' && userRole !== 'editor'">Add Post</button>
+  </form>
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+</div>

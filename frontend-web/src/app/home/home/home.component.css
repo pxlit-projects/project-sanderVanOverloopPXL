@@ -1,4 +1,18 @@
+.post-overview {
+  background-color: #f3e5f5; /* Light violet background */
+  color: #4a148c; /* Dark violet text */
+}
+
 .custom-card {
-  background-color: #8a2be2; /* Violet color */
-  color: white; /* White text */
+  background-color: #f8bbd0; /* Light pink background */
+  color: #880e4f; /* Dark pink text */
+}
+
+button {
+  background-color: #8e24aa; /* Violet button background */
+  color: #ffffff; /* White text */
+}
+
+button:hover {
+  background-color: #6a1b9a; /* Darker violet on hover */
 }
