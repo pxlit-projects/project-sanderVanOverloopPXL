@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data //  provides getters, setters, and other utility methods
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class EditPostRequest {
     @NotBlank(message = "Content is mandatory")
     private String content;
     @NotNull(message = "Date created is mandatory")
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
     @NotNull
     private boolean inConcept;
 }

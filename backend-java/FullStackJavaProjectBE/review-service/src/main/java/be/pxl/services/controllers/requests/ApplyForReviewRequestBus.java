@@ -2,6 +2,7 @@ package be.pxl.services.controllers.requests;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public record ApplyForReviewRequestBus(
@@ -10,7 +11,7 @@ public record ApplyForReviewRequestBus(
         String title,
         String content,
         String author,
-        LocalDate dateCreated,
+        LocalDateTime dateCreated,
         boolean inConcept,
         boolean isApproved,
         boolean inReview,

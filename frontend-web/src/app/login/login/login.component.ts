@@ -21,7 +21,7 @@ export class LoginComponent {
   handleLogin(): void {
     const success = this.authService.login(this.user, this.password);
     if (success) {
-      this.router.navigate(['/testpage']);
+      this.router.navigate(['/home']);
     } else {
       this.errorMessage = 'Login failed. Please check your credentials and try again.';
     }

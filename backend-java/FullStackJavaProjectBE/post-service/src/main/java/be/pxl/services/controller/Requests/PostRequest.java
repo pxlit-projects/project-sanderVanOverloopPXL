@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data //  provides getters, setters, and other utility methods
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class PostRequest {
     private String content;
 
     @NotNull(message = "Date created is mandatory")
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
 
     @NotNull
     private boolean inConcept;

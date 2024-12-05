@@ -7,6 +7,7 @@ export class AuthService {
   private accounts = [
     { userId: 1, username: 'admin', password: 'admin123', role: 'author' },
     { userId: 2, username: 'user', password: 'user123', role: 'user' },
+    { userId: 3, username: 'editor', password: 'editor123', role: 'editor' }
   ];
 
   private currentUser: string | null = null;
