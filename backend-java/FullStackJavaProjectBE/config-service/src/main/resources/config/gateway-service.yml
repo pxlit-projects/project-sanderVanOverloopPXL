@@ -1,3 +1,6 @@
+server:
+  port: 8086
+
 spring:
   cloud:
     gateway:
@@ -9,7 +12,7 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "http://localhost:4200"
+            allowedOrigins: "http://localhost:4200, http://127.0.0.1:4200"
             allowedMethods:
               - GET
               - POST
@@ -44,4 +47,4 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: http://localhost:8061/eureka/
