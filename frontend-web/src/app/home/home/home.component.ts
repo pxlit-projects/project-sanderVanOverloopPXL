@@ -1,4 +1,3 @@
-// src/app/home/home/home.component.ts
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PostDTO } from '../../services/postdtos';
@@ -9,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PostService } from '../../services/post-service.service';
-import { FilterPostsRequest } from '../../services/postrequests';
+import {ApplyForReviewRequest, FilterPostsRequest} from '../../services/postrequests';
 
 @Component({
   selector: 'app-home',
@@ -100,5 +99,41 @@ export class HomeComponent implements OnInit {
     return this.userRole === 'user';
   }
 
+  isAdmin(): boolean {
+    return this.userRole === 'editor';
+  }
 
+  goToReview(): void {
+    this.router.navigate(['/review']);
+  }
+  sendToReview(postId: number): void {
+    const post = this.postsInConcept.find(p => p.id === postId);
+    if (!post) {
+      console.error('Post not found');
+      return;
+    }
+
+    const request = new ApplyForReviewRequest(
+      post.id,
+      this.userId!,
+      post.title,
+      post.content,
+      post.author,
+      post.dateCreated,
+      post.inConcept,
+      false, // isApproved
+      true,  // inReview
+      ''     // rejectedReason
+    );
+
+    this.postService.sendForReview(request, this.userRole!, this.username!, this.userId!.toString()).subscribe(
+      () => {
+        console.log('Post sent to review successfully');
+        this.fetchPostsInConcept(); // Refresh the list of posts in concept
+      },
+      (error) => {
+        console.error('Error sending post to review', error);
+      }
+    );
+  }
 }

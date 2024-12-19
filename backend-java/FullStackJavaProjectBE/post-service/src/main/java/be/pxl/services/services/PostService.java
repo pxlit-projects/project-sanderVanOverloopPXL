@@ -103,6 +103,7 @@ public class PostService implements IPostService {
         }
         Post post = postRepository.findById(request.getId()).orElseThrow(() -> new PostsException("Post not found"));
         post.setInReview(true);
+        post.setInConcept(false);
         postRepository.save(post);
 
         ApplyForReviewRequestBus requestBus = new ApplyForReviewRequestBus(
@@ -158,6 +159,13 @@ public class PostService implements IPostService {
 
         oldPost.setApproved(requestBus.status() == ReviewStatus.APPROVED);
 
+        if (oldPost.isApproved()) {
+            oldPost.setInReview(false);
+            oldPost.setInConcept(false);
+        } else {
+            oldPost.setInReview(false);
+            oldPost.setInConcept(true);
+        }
 
         postRepository.save(oldPost);
 
