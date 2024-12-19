@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long authorId;
     private String title;

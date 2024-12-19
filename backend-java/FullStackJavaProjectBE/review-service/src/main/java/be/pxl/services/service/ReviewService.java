@@ -43,7 +43,7 @@ public class ReviewService implements IReviewService{
         }
 
 
-        if (!userRole.equals("reviewer")) {
+        if (!userRole.equals("editor")) {
             throw new ReviewException("User is not authorized to review a post");
         }
 
@@ -62,7 +62,7 @@ public class ReviewService implements IReviewService{
 
     @Override
     public List<PostDTO> getReviewsInWait(String userRole, String user, String userId) {
-        if (!userRole.equals("reviewer")) {
+        if (!userRole.equals("editor")) {
             throw new ReviewException("User is not authorized to get reviews in wait");
         }
         List<Post> posts = postRepository.findPostByisApproved(false);
