@@ -63,6 +63,7 @@ public class PostService implements IPostService {
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
         post.setInConcept(request.isInConcept());
+        post.setDateCreated(request.getDateCreated());
         postRepository.save(post);
     }
 

@@ -9,7 +9,6 @@ import { PostDTO, NotificationDTO } from './postdtos';
   providedIn: 'root',
 })
 export class PostService {
-  private apiEnd = "post/api/post";
   constructor(private http: HttpClient) {}
 
   createPost(post: PostRequest, userRole: string, username: string, userId: number): Observable<any> {
@@ -52,6 +51,7 @@ export class PostService {
   }
 
   filterPosts(request: FilterPostsRequest): Observable<PostDTO[]> {
+    console.log(request);
     return this.http.post<PostDTO[]>(`${environment.postUrl}/filter`, request);
   }
 
