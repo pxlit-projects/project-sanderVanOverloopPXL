@@ -1,17 +1,26 @@
+// src/app/home/home/home.component.ts
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PostDTO } from '../../services/postdtos';
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
-import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
-import {RouterLink} from '@angular/router';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle
+} from '@angular/material/card';
+import { Router, RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard, RouterLink]
+  imports: [CommonModule, MatCard, MatCardActions, RouterLink, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatButton]
 })
 export class HomeComponent implements OnInit {
   posts: PostDTO[] = [];
@@ -20,7 +29,7 @@ export class HomeComponent implements OnInit {
   username: string | null = null;
   userId: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('userRole');
@@ -65,5 +74,13 @@ export class HomeComponent implements OnInit {
         console.error('Error fetching posts in concept', error);
       }
     );
+  }
+
+  openEditPage(postId: number): void {
+    this.router.navigate(['/edit', postId]);
+  }
+
+  isUserRoleUser(): boolean {
+    return this.userRole === 'user';
   }
 }

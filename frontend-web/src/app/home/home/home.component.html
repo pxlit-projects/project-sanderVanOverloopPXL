@@ -1,6 +1,7 @@
+<!-- src/app/home/home/home.component.html -->
 <div class="post-overview p-4">
-  <h1 class="text-2xl font-bold mb-4">Posts Overview</h1>
-  <button routerLink="/add-post" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Add New Post</button>
+  <h1 class="text-2xl font-bold mb-4">Public Posts</h1>
+  <button *ngIf="!isUserRoleUser()" routerLink="/add-post" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Add New Post</button>
   @for (post of posts; track post.id) {
     <mat-card class="mb-4 custom-card">
       <mat-card-header>
@@ -17,7 +18,8 @@
 </div>
 
 <div class="post-overview p-4">
-  <h1 class="text-2xl font-bold mb-4">Posts In Concept</h1>
+  <h1 class="text-2xl font-bold mb-4">Posts in Concept</h1>
+  <button *ngIf="!isUserRoleUser()" routerLink="/add-post" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Add New Post</button>
   @for (post of postsInConcept; track post.id) {
     <mat-card class="mb-4 custom-card">
       <mat-card-header>
@@ -27,8 +29,11 @@
       <mat-card-content>
         <p><strong>Date Created:</strong> {{ post.dateCreated | date }}</p>
       </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="openEditPage(post.id)">Edit</button>
+      </mat-card-actions>
     </mat-card>
   } @empty {
-    <div class="text-center text-gray-500">No posts in concept available.</div>
+    <div class="text-center text-gray-500">No posts available.</div>
   }
 </div>

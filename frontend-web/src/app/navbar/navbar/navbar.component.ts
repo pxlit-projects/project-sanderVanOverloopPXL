@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +9,11 @@ import { Router } from '@angular/router';
   standalone: true
 })
 export class NavbarComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private location: Location) {}
+
+  goBack(): void {
+    this.location.back();
+  }
 
   logout(): void {
     localStorage.clear();

@@ -1,0 +1,17 @@
+.navbar .navbar-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.navbar .btn-outline-light {
+  color: white;
+  border-color: white;
+  margin-left: 10px;
+}
+
+.navbar .btn-outline-danger {
+  color: white;
+  border-color: white;
+  margin-left: 10px;
+}

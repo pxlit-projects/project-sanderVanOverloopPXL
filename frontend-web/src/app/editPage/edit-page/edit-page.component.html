@@ -1,1 +1,27 @@
-<p>edit-page works!</p>
+<div class="edit-post-form p-4">
+  <h1 class="text-2xl font-bold mb-4">Edit Post</h1>
+  <form [formGroup]="editPostForm" (ngSubmit)="updatePost()">
+    <div class="form-section mb-4">
+      <h2 class="text-xl font-semibold mb-2">Post Details</h2>
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title" required>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Content</mat-label>
+        <textarea matInput formControlName="content" required></textarea>
+      </mat-form-field>
+    </div>
+    <div class="form-section mb-4">
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Date Created</mat-label>
+        <input matInput type="datetime-local" formControlName="dateCreated" required>
+      </mat-form-field>
+      <mat-checkbox formControlName="inConcept" [disabled]="true">In Concept</mat-checkbox>
+    </div>
+    <button mat-raised-button color="primary" type="submit">Update Post</button>
+  </form>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>
