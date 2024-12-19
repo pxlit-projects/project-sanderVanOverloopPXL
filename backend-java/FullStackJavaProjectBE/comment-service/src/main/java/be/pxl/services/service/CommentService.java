@@ -25,7 +25,7 @@ public class CommentService implements ICommentService{
     @Override
     public void addComment(AddCommentRequest request, String userRole, String username, String userId) {
 
-        if (!userRole.equals("user") && !userRole.equals("author")) {
+        if (!userRole.equals("user") && !userRole.equals("author") && !userRole.equals("editor")) {
             throw new CommentException("User is not authorized to add a comment");
         }
 
@@ -51,7 +51,7 @@ public class CommentService implements ICommentService{
     public List<CommentDTO> getComments(long postId) {
         List<Comment> comments = commentRepository.findAll().stream().filter(comment -> comment.getPostId() == postId).toList();
         return comments.stream()
-                .map(comment -> new CommentDTO(comment.getMessage(), comment.getUsernameMadeBy(), comment.getDateCreated()))
+                .map(comment -> new CommentDTO(comment.getId(),comment.getMessage(), comment.getUsernameMadeBy(), comment.getDateCreated()))
                 .toList();
     }
 
@@ -72,7 +72,7 @@ public class CommentService implements ICommentService{
         commentRepository.save(comment);
 
 
-        return new CommentDTO(comment.getMessage(), comment.getUsernameMadeBy(), comment.getDateCreated());
+        return new CommentDTO(comment.getId(),comment.getMessage(), comment.getUsernameMadeBy(), comment.getDateCreated());
     }
 
     @Override
