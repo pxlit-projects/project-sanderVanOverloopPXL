@@ -51,13 +51,14 @@ public class ReviewService implements IReviewService{
         AddNotificationRequest notification = new AddNotificationRequest();
         long userId = post.getAuthorId();
         notification.setAuthorId(userId);
-        notification.setContent("Your post has been reviewed");
+        notification.setContent("Your post has been reviewed and " + review.status());
 
         postClient.addNotification(notification, "reviewer");
 
         String joepie = "joepie";
 
         rabbitTemplate.convertAndSend("reviewQueue1", review);
+        postRepository.delete(post);
     }
 
     @Override

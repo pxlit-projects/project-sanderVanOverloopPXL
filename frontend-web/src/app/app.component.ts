@@ -7,6 +7,7 @@ import { NavbarComponent } from './navbar/navbar/navbar.component';
   imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {

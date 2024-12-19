@@ -84,6 +84,7 @@ export class HomeComponent implements OnInit {
     this.http.get<PostDTO[]>(url, { headers }).subscribe(
       (data: PostDTO[]) => {
         this.postsInConcept = data;
+        console.log(data);
       },
       (error) => {
         console.error('Error fetching posts in concept', error);
@@ -135,5 +136,9 @@ export class HomeComponent implements OnInit {
         console.error('Error sending post to review', error);
       }
     );
+  }
+
+  goToDetail(postId: number): void {
+    this.router.navigate(['/post-detail', postId]);
   }
 }

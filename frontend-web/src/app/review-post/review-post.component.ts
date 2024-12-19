@@ -4,6 +4,7 @@ import { PostDTO } from '../services/reviewdtos';
 import { NgForOf, NgIf } from '@angular/common';
 import {ReviewStatus} from '../services/reviewstatus';
 import {ReviewRequest} from '../services/reviewrequests';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-review-post',
@@ -11,7 +12,8 @@ import {ReviewRequest} from '../services/reviewrequests';
   standalone: true,
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   styleUrls: ['./review-post.component.css']
 })
@@ -65,8 +67,8 @@ export class ReviewPostComponent implements OnInit {
     );
   }
 
-  rejectReview(reviewId: number): void {
-    const reviewRequest = new ReviewRequest(reviewId.toString(), ReviewStatus.REJECTED, 'Review rejected');
+  rejectReview(reviewId: number, rejectionReason: string): void {
+    const reviewRequest = new ReviewRequest(reviewId.toString(), ReviewStatus.REJECTED, rejectionReason);
     this.reviewService.postReview(reviewRequest, this.userRole!).subscribe(
       () => {
         console.log('Review rejected successfully');

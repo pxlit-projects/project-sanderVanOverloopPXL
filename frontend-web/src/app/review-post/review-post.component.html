@@ -5,10 +5,11 @@
       <p class="text-gray-700"><strong>Content:</strong> {{ review.content }}</p>
       <p class="text-gray-500"><strong>Author:</strong> {{ review.author }}</p>
       <p class="text-gray-400"><strong>Date Created:</strong> {{ review.dateCreated }}</p>
+      <input [(ngModel)]="review.rejectedReason" placeholder="Enter rejection reason" class="mb-2 p-2 border rounded">
       <hr class="my-2" />
       <div class="flex space-x-4">
         <button (click)="acceptReview(review.id)" class="bg-green-500 text-white px-4 py-2 rounded">Accept</button>
-        <button (click)="rejectReview(review.id)" class="bg-red-500 text-white px-4 py-2 rounded">Reject</button>
+        <button (click)="rejectReview(review.id, review.rejectedReason)" class="bg-red-500 text-white px-4 py-2 rounded">Reject</button>
       </div>
     </div>
   </div>

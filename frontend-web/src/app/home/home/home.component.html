@@ -1,4 +1,3 @@
-<!-- src/app/home/home/home.component.html -->
 <div class="post-overview p-4">
   <h1 class="text-2xl font-bold mb-4">Public Posts</h1>
   <form [formGroup]="filterForm" (ngSubmit)="fetchAllPublicPostsAndFilter()">
@@ -7,10 +6,9 @@
     <input formControlName="date" placeholder="Filter by date" class="mb-4 p-2 border rounded">
     <button type="submit" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Filter</button>
   </form>
-  <button *ngIf="!isUserRoleUser()" routerLink="/add-post" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Add New Post</button>
   <button *ngIf="isAdmin()" (click)="goToReview()" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Go to Review</button>
   <ng-container *ngFor="let post of posts;">
-    <mat-card class="mb-4 custom-card">
+    <mat-card class="mb-4 custom-card" (click)="goToDetail(post.id)">
       <mat-card-header>
         <mat-card-title>{{ post.title }}</mat-card-title>
         <mat-card-subtitle>Author: {{ post.author }}</mat-card-subtitle>
@@ -34,6 +32,7 @@
       </mat-card-header>
       <mat-card-content>
         <p><strong>Date Created:</strong> {{ post.dateCreated | date }}</p>
+        <p *ngIf="post.rejectedReason"><strong>Rejected Reason:</strong> {{ post.rejectedReason }}</p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-button (click)="openEditPage(post.id)">Edit</button>
