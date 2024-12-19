@@ -1,0 +1,18 @@
+<div class="p-4">
+  <div *ngIf="reviewsInWait.length > 0; else noReviews" class="space-y-4">
+    <div *ngFor="let review of reviewsInWait" class="p-4 border rounded-lg shadow-md">
+      <h3 class="text-xl font-bold"><strong>Title:</strong> {{ review.title }}</h3>
+      <p class="text-gray-700"><strong>Content:</strong> {{ review.content }}</p>
+      <p class="text-gray-500"><strong>Author:</strong> {{ review.author }}</p>
+      <p class="text-gray-400"><strong>Date Created:</strong> {{ review.dateCreated }}</p>
+      <hr class="my-2" />
+      <div class="flex space-x-4">
+        <button (click)="acceptReview(review.id)" class="bg-green-500 text-white px-4 py-2 rounded">Accept</button>
+        <button (click)="rejectReview(review.id)" class="bg-red-500 text-white px-4 py-2 rounded">Reject</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #noReviews>
+    <p class="text-center text-gray-500">No reviews in wait.</p>
+  </ng-template>
+</div>
