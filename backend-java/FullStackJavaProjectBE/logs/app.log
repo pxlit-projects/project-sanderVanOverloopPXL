@@ -1,0 +1,5 @@
+2024-12-20T22:47:51.533+0100 INFO               [main]                         be.pxl.services.PostServiceApplication - Starting PostServiceApplication using Java 21.0.2 with PID 16996 (C:\3Tin\fullstackJavaProject\project-sanderVanOverloopPXL\backend-java\FullStackJavaProjectBE\post-service\target\classes started by Administrator in C:\3Tin\fullstackJavaProject\project-sanderVanOverloopPXL\backend-java\FullStackJavaProjectBE)
+2024-12-20T22:47:51.535+0100 DEBUG              [main]                         be.pxl.services.PostServiceApplication - Running with Spring Boot v3.3.6, Spring v6.1.15
+2024-12-20T22:47:51.535+0100 INFO               [main]                         be.pxl.services.PostServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-20T22:48:00.247+0100 INFO               [main]                         be.pxl.services.PostServiceApplication - Started PostServiceApplication in 10.02 seconds (process running for 10.765)
+2024-12-20T22:48:15.914+0100 INFO               [http-nio-8082-exec-2]         be.pxl.services.controller.PostController - Getting posts in concept

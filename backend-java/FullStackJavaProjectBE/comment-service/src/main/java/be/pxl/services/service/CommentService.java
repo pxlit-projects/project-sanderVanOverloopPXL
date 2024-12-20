@@ -8,6 +8,8 @@ import be.pxl.services.exceptions.CommentException;
 import be.pxl.services.exceptions.UnautherizedException;
 import be.pxl.services.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ import java.util.List;
 public class CommentService implements ICommentService{
 
     private final CommentRepository commentRepository;
-
+    private static final Logger logger = LoggerFactory.getLogger(CommentService.class);
 
 
     @Override
@@ -45,6 +47,7 @@ public class CommentService implements ICommentService{
 
 
         commentRepository.save(comment);
+        logger.info("Comment has been added");
     }
 
     @Override
@@ -70,6 +73,7 @@ public class CommentService implements ICommentService{
         comment.setMessage(request.getMessage());
 
         commentRepository.save(comment);
+        logger.info("Comment has been edited");
 
 
         return new CommentDTO(comment.getId(),comment.getMessage(), comment.getUsernameMadeBy(), comment.getDateCreated());
@@ -89,5 +93,6 @@ public class CommentService implements ICommentService{
         }
 
         commentRepository.delete(comment);
+        logger.info("Comment has been deleted");
     }
 }

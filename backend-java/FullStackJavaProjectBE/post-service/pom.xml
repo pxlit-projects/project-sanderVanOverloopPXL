@@ -63,6 +63,14 @@
             <version>2.2.2.RELEASE</version>
         </dependency>
 
+        <!--        logger dependency-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+
+
 
     </dependencies>
 
