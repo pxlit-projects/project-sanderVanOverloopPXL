@@ -145,4 +145,26 @@ public class CommentServiceTests {
             commentService.deleteComment(1L, "user", "testUser", "1");
         });
     }
+    @Test
+    void testEditCommentUnauthorizedUser() {
+        EditCommentRequest request = new EditCommentRequest("Updated message");
+        Comment comment = new Comment(1L, "Test message", 1L, "testUser", 1L, LocalDate.now());
+
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
+
+        assertThrows(UnautherizedException.class, () -> {
+            commentService.editComment(1L, request, "user", "testUser", "2"); // Different userId
+        });
+    }
+
+    @Test
+    void testDeleteCommentUnauthorizedUser() {
+        Comment comment = new Comment(1L, "Test message", 1L, "testUser", 1L, LocalDate.now());
+
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
+
+        assertThrows(UnautherizedException.class, () -> {
+            commentService.deleteComment(1L, "user", "testUser", "2"); // Different userId
+        });
+    }
 }

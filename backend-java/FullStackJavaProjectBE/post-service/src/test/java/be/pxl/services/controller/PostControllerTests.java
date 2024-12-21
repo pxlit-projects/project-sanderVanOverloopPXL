@@ -1,23 +1,18 @@
 package be.pxl.services.controller;
 
-import be.pxl.services.Client.PostClient;
-import be.pxl.services.controllers.dto.PostDTO;
-import be.pxl.services.controllers.requests.ReviewRequest;
-import be.pxl.services.domain.Post;
-import be.pxl.services.domain.ReviewStatus;
-import be.pxl.services.repository.PostRepository;
 
+import be.pxl.services.controller.Requests.*;
+import be.pxl.services.controller.dto.PostDTO;
+import be.pxl.services.domain.Post;
+import be.pxl.services.repository.PostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -38,9 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:application.properties")
-public class ReviewControllerTests {
-
-
+public class PostControllerTests {
     @Autowired
     MockMvc mockMvc;
 
@@ -49,9 +42,6 @@ public class ReviewControllerTests {
 
     @Autowired
     private PostRepository postRepository;
-
-    @MockBean
-    private PostClient postClient;
 
     @Container
     private static MySQLContainer<?> sqlContainer = new MySQLContainer<>("mysql:5.7.37");
@@ -69,48 +59,19 @@ public class ReviewControllerTests {
     }
 
     @Test
-    void testPostReview() throws Exception {
-        // Save the post before testing the review
-        Post post = Post.builder()
-                .id(1L)
-                .authorId(1L)
-                .title("Test post")
-                .content("Test content")
-                .dateCreated(LocalDateTime.now())
-                .isApproved(false)
-                .build();
-        postRepository.save(post);
+    void testAddPost() throws Exception {
+        PostRequest request = new PostRequest("Test title", "Test content", LocalDateTime.now(), true);
 
-        ReviewRequest request = new ReviewRequest("1", ReviewStatus.APPROVED, "Test review");
-
-        // Mock the PostClient response
-        Mockito.when(postClient.addNotification(Mockito.any(), Mockito.anyString()))
-                .thenReturn(ResponseEntity.ok().build());
-
-        mockMvc.perform(post("/api/review")
+        mockMvc.perform(post("/api/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("Role", "editor"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testGetReviewsInWait() throws Exception {
-        Post post = Post.builder()
-                .id(1L)
-                .authorId(1L)
-                .title("Test post")
-                .content("Test content")
-                .dateCreated(LocalDateTime.now())
-                .isApproved(false)
-                .build();
-        postRepository.save(post);
-
-        mockMvc.perform(get("/api/review")
-                        .header("Role", "editor")
+                        .header("Role", "author")
                         .header("User", "testUser")
                         .header("Userid", "1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("Test post"));
+                .andExpect(status().isCreated());
     }
+
+
+
+
 }

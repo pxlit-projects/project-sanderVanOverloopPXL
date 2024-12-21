@@ -1,10 +1,11 @@
 package be.pxl.services.controller;
 
+
+import be.pxl.services.controller.dto.CommentDTO;
 import be.pxl.services.controller.request.AddCommentRequest;
 import be.pxl.services.controller.request.EditCommentRequest;
 import be.pxl.services.domain.Comment;
 import be.pxl.services.repository.CommentRepository;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -21,10 +24,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.Collections;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @Testcontainers
@@ -57,155 +61,48 @@ public class CommentControllerTests {
     }
 
     @Test
-    void testAddComment() {
-        AddCommentRequest request = new AddCommentRequest();
-        request.setMessage("Test Comment");
-        request.setPostId(1L);
+    void testAddComment() throws Exception {
+        AddCommentRequest request = new AddCommentRequest("Test message", 1L);
 
-        Comment comment = Comment.builder()
-                .message("Test Comment")
-                .postId(1L)
-                .userId(1L)
-                .usernameMadeBy("testUser")
-                .dateCreated(LocalDate.now())
-                .build();
+        mockMvc.perform(post("/api/comment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("Role", "user")
+                        .header("User", "testUser")
+                        .header("Userid", "1"))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void testGetComments() throws Exception {
+        Comment comment = new Comment(1L, "Test message", 1L, "testUser", 1L, LocalDate.now());
         commentRepository.save(comment);
 
-        Assertions.assertEquals(1, commentRepository.count());
-        Comment savedComment = commentRepository.findAll().get(0);
-        Assertions.assertEquals("Test Comment", savedComment.getMessage());
+        mockMvc.perform(get("/api/comment/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].message").value("Test message"));
     }
 
     @Test
-    void testGetComments() {
-        Comment comment1 = Comment.builder()
-                .message("Comment 1")
-                .postId(1L)
-                .userId(1L)
-                .usernameMadeBy("user1")
-                .dateCreated(LocalDate.now())
-                .build();
-
-        Comment comment2 = Comment.builder()
-                .message("Comment 2")
-                .postId(1L)
-                .userId(2L)
-                .usernameMadeBy("user2")
-                .dateCreated(LocalDate.now())
-                .build();
-
-        commentRepository.save(comment1);
-        commentRepository.save(comment2);
-
-        List<Comment> comments = commentRepository.findAll();
-        Assertions.assertEquals(2, comments.size());
-    }
-
-    @Test
-    void testEditComment() {
-        Comment comment = Comment.builder()
-                .message("Original Comment")
-                .postId(1L)
-                .userId(1L)
-                .usernameMadeBy("testUser")
-                .dateCreated(LocalDate.now())
-                .build();
+    void testEditComment() throws Exception {
+        Comment comment = new Comment(1L, "Test message", 1L, "testUser", 1L, LocalDate.now());
         commentRepository.save(comment);
 
-        EditCommentRequest editRequest = new EditCommentRequest();
-        editRequest.setMessage("Edited Comment");
+        EditCommentRequest request = new EditCommentRequest("Updated message");
 
-        Comment savedComment = commentRepository.findAll().get(0);
-        savedComment.setMessage(editRequest.getMessage());
-        commentRepository.save(savedComment);
+        mockMvc.perform(post("/api/comment/comment/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("Role", "user")
+                        .header("User", "testUser")
+                        .header("Userid", "1"))
+                .andExpect(status().isOk());
 
-        Optional<Comment> updatedComment = commentRepository.findById(savedComment.getId());
-        Assertions.assertTrue(updatedComment.isPresent());
-        Assertions.assertEquals("Edited Comment", updatedComment.get().getMessage());
-    }
-
-    @Test
-    void testDeleteComment() {
-        Comment comment = Comment.builder()
-                .message("Comment to Delete")
-                .postId(1L)
-                .userId(1L)
-                .usernameMadeBy("testUser")
-                .dateCreated(LocalDate.now())
-                .build();
-        commentRepository.save(comment);
-
-        Assertions.assertEquals(1, commentRepository.count());
-        Comment savedComment = commentRepository.findAll().get(0);
-        commentRepository.deleteById(savedComment.getId());
-
-        Assertions.assertEquals(0, commentRepository.count());
-    }
-
-    @Test
-    void testUnauthorizedAddComment() {
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            AddCommentRequest request = new AddCommentRequest();
-            request.setMessage("Unauthorized Comment");
-            request.setPostId(1L);
-            // Simulate unauthorized role logic here
-            throw new RuntimeException("Unauthorized Role");
-        });
-    }
-
-    @Test
-    void testAddCommentWithInvalidData() {
-        AddCommentRequest request = new AddCommentRequest();
-        request.setMessage(""); // Empty message
-        request.setPostId(0L); // Invalid Post ID
-
-        Assertions.assertThrows(Exception.class, () -> {
-            // Add logic to validate invalid data during the test
-            if (request.getMessage().isEmpty() || request.getPostId() <= 0) {
-                throw new RuntimeException("Invalid data");
-            }
-        });
-    }
-
-    @Test
-    void testEditCommentUnauthorized() {
-        Comment comment = Comment.builder()
-                .message("Comment to Edit")
-                .postId(1L)
-                .userId(1L)
-                .usernameMadeBy("testUser")
-                .dateCreated(LocalDate.now())
-                .build();
-        commentRepository.save(comment);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            EditCommentRequest editRequest = new EditCommentRequest();
-            editRequest.setMessage("Edited by Unauthorized User");
-            // Simulate unauthorized user editing
-            throw new RuntimeException("Unauthorized Edit Attempt");
-        });
+        Comment updatedComment = commentRepository.findById(1L).orElseThrow();
+        Assertions.assertEquals("Updated message", updatedComment.getMessage());
     }
 
 
-    @Test
-    void testAddCommentEdgeCases() {
-        AddCommentRequest request = new AddCommentRequest();
-        request.setMessage("a".repeat(255)); // Maximum allowed length for message
-        request.setPostId(1L);
-
-        Comment comment = Comment.builder()
-                .message(request.getMessage())
-                .postId(request.getPostId())
-                .userId(1L)
-                .usernameMadeBy("testUser")
-                .dateCreated(LocalDate.now())
-                .build();
-        commentRepository.save(comment);
-
-        Assertions.assertEquals(1, commentRepository.count());
-        Comment savedComment = commentRepository.findAll().get(0);
-        Assertions.assertEquals(request.getMessage(), savedComment.getMessage());
-    }
 
 
 }
