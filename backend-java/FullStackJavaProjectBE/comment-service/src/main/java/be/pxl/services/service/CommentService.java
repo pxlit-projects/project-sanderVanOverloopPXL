@@ -60,7 +60,7 @@ public class CommentService implements ICommentService{
 
     @Override
     public CommentDTO editComment(long commentId, EditCommentRequest request, String userRole, String username, String userId) {
-        if (!userRole.equals("user") && !userRole.equals("author")) {
+        if (!userRole.equals("user") && !userRole.equals("author") && !userRole.equals("editor")) {
             throw new UnautherizedException("User is not authorized to edit a comment");
         }
 
@@ -81,7 +81,7 @@ public class CommentService implements ICommentService{
 
     @Override
     public void deleteComment(long commentId, String userRole, String username, String userId) {
-        if (!userRole.equals("user") && !userRole.equals("author")) {
+        if (!userRole.equals("user") && !userRole.equals("author")&& !userRole.equals("editor")) {
             throw new UnautherizedException("User is not authorized to delete a comment");
         }
 

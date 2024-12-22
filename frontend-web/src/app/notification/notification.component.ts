@@ -38,7 +38,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
       this.postService.getNotifications(userId, userRole).subscribe(
         (data: NotificationDTO[]) => {
           this.notifications = data;
-          console.log('hey')
         },
         (error) => {
           console.error('Error fetching notifications', error);

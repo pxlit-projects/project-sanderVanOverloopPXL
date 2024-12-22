@@ -1,0 +1,4 @@
+First
+ docker build -t javaFullstack-app .
+Second
+docker run -d -p 80:80 javafullstack-app
