@@ -37,8 +37,11 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "karma-webpack": "^5.0.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
-    "typescript": "~5.6.2"
+    "ts-loader": "^9.5.1",
+    "typescript": "~5.6.2",
+    "webpack": "^5.97.1"
   }
 }

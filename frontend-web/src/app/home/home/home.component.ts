@@ -74,10 +74,15 @@ export class HomeComponent implements OnInit {
   }
 
   fetchPostsInConcept(): void {
+    if (this.userId === null) {
+      console.error('User ID is missing');
+      return;
+    }
+
     const headers = {
       'User': this.username!,
       'Role': this.userRole!,
-      'UserId': this.userId!.toString()
+      'UserId': this.userId.toString()
     };
     const url = `${environment.postUrl}/inConcept`;
     console.log('Fetching posts in concept from URL:', url);
@@ -108,6 +113,11 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/review']);
   }
   sendToReview(postId: number): void {
+    if (this.userId === null) {
+      console.error('User ID is missing');
+      return;
+    }
+
     const post = this.postsInConcept.find(p => p.id === postId);
     if (!post) {
       console.error('Post not found');
@@ -116,7 +126,7 @@ export class HomeComponent implements OnInit {
 
     const request = new ApplyForReviewRequest(
       post.id,
-      this.userId!,
+      this.userId,
       post.title,
       post.content,
       post.author,
@@ -127,7 +137,7 @@ export class HomeComponent implements OnInit {
       ''     // rejectedReason
     );
 
-    this.postService.sendForReview(request, this.userRole!, this.username!, this.userId!.toString()).subscribe(
+    this.postService.sendForReview(request, this.userRole!, this.username!, this.userId.toString()).subscribe(
       () => {
         console.log('Post sent to review successfully');
         this.fetchPostsInConcept(); // Refresh the list of posts in concept

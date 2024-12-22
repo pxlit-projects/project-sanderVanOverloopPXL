@@ -16,7 +16,7 @@ import {NgForOf, NgIf} from '@angular/common';
 })
 export class NotificationComponent implements OnInit, OnDestroy {
   notifications: NotificationDTO[] = [];
-  private subscription: Subscription | null = null;
+  subscription: Subscription | null = null;
 
   constructor(private postService: PostService) {}
 
