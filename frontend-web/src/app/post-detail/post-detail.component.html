@@ -1,34 +1,49 @@
-<div *ngIf="post" class="p-6 max-w-4xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-  <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
-  <div class="text-gray-700">
-    <p class="text-lg"><strong>Author:</strong> {{ post.author }}</p>
-    <p class="text-lg"><strong>Date Created:</strong> {{ post.dateCreated | date:'longDate' }}</p>
-    <p class="text-lg"><strong>Content:</strong> {{ post.content }}</p>
-  </div>
-  <div class="mt-6">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">Comments</h2>
-    <div *ngFor="let comment of comments" class="bg-gray-100 p-4 rounded-lg mb-4">
-      <p class="text-gray-800"><strong>{{ comment.usernameMadeBy }}</strong> <span class="text-gray-600 text-sm">{{ comment.dateCreated | date:'short' }}</span></p>
+@if(post){
+  <div class="p-6 max-w-4xl mx-auto bg-white rounded-xl shadow-md space-y-4">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
+    <div class="text-gray-700">
+      <p class="text-lg"><strong>Author:</strong> {{ post.author }}</p>
+      <p class="text-lg"><strong>Date Created:</strong> {{ post.dateCreated | date:'longDate' }}</p>
+      <p class="text-lg"><strong>Content:</strong> {{ post.content }}</p>
+    </div>
+    <div class="mt-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Comments</h2>
+      @for(comment of comments; track comment.id){
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+          <p class="text-gray-800"><strong>{{ comment.usernameMadeBy }}</strong> <span class="text-gray-600 text-sm">{{ comment.dateCreated | date:'short' }}</span></p>
 
-      <!-- Check if the comment is in editing mode -->
-      <div *ngIf="editingCommentId === comment.id && isCommentOwner(comment); else displayComment">
-        <input [(ngModel)]="editCommentMessage" placeholder="Edit your comment" class="p-2 border rounded">
-        <button (click)="saveEditComment(comment.id)" class="bg-green-500 text-white px-4 py-2 rounded">OK</button>
-        <button (click)="cancelEdit()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+          <!-- Check if the comment is in editing mode -->
+          @if(editingCommentId === comment.id && isCommentOwner(comment)){
+            <div>
+              <input [(ngModel)]="editCommentMessage" placeholder="Edit your comment" class="p-2 border rounded">
+              <button (click)="saveEditComment(comment.id)" class="bg-green-500 text-white px-4 py-2 rounded">OK</button>
+              <button (click)="cancelEdit()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+            </div>
+          } @else {
+            <!-- Display the comment text if not in editing mode -->
+            <ng-template>
+              <p class="text-gray-700">{{ comment.message }}</p>
+              <button *ngIf="isCommentOwner(comment)" (click)="startEditing(comment)" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+              <button *ngIf="isCommentOwner(comment)" (click)="deleteComment(comment.id)" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+            </ng-template>
+          }
+
+
+
+        </div>
+      }
+      @if(comments.length === 0){
+        <div class="text-center text-gray-500">No comments available.</div>
+      }
+
+      <div class="mt-4">
+        <input [(ngModel)]="newCommentMessage" placeholder="Add a comment" class="p-2 border rounded w-full">
+        <button (click)="addComment()" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Add Comment</button>
       </div>
-
-      <!-- Display the comment text if not in editing mode -->
-      <ng-template #displayComment>
-        <p class="text-gray-700">{{ comment.message }}</p>
-        <button *ngIf="isCommentOwner(comment)" (click)="startEditing(comment)" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
-        <button *ngIf="isCommentOwner(comment)" (click)="deleteComment(comment.id)" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-      </ng-template>
-    </div>
-    <div *ngIf="comments.length === 0" class="text-center text-gray-500">No comments available.</div>
-    <div class="mt-4">
-      <input [(ngModel)]="newCommentMessage" placeholder="Add a comment" class="p-2 border rounded w-full">
-      <button (click)="addComment()" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Add Comment</button>
     </div>
   </div>
-</div>
-<div *ngIf="!post" class="text-center text-gray-500 mt-6">Loading post details...</div>
+} @else {
+  <div class="text-center text-gray-500 mt-6">Loading post details...</div>
+
+}
+

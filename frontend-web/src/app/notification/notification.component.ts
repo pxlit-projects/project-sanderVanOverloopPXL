@@ -1,34 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PostService } from '../services/post-service.service';
 import { NotificationDTO } from '../services/postdtos';
-import { Subscription, interval } from 'rxjs';
-import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   standalone: true,
-  imports: [
-    NgForOf,
-    NgIf
-  ],
+  imports: [],
   styleUrls: ['./notification.component.css']
 })
-export class NotificationComponent implements OnInit, OnDestroy {
+export class NotificationComponent implements OnInit {
   notifications: NotificationDTO[] = [];
-  subscription: Subscription | null = null;
 
   constructor(private postService: PostService) {}
 
   ngOnInit(): void {
     this.fetchNotifications();
-    this.subscription = interval(5000).subscribe(() => this.fetchNotifications());
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   fetchNotifications(): void {

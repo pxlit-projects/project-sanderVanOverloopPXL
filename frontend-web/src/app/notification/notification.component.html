@@ -1,11 +1,19 @@
 <div class="p-4">
   <h1 class="text-2xl font-bold mb-4">Notifications</h1>
-  <div *ngIf="notifications.length > 0; else noNotifications" class="space-y-4">
-    <div *ngFor="let notification of notifications" class="p-4 border rounded-lg shadow-md">
-      <p class="text-gray-700">{{ notification.content }}</p>
+  @if (notifications.length > 0){
+    <div class="space-y-4">
+      @for (notification of notifications; track notification.content){
+        <div class="p-4 border rounded-lg shadow-md">
+          <p class="text-gray-700">{{ notification.content }}</p>
+        </div>
+      }
+
     </div>
-  </div>
-  <ng-template #noNotifications>
-    <p class="text-center text-gray-500">No notifications available.</p>
-  </ng-template>
+  } @else {
+    <ng-template >
+      <p class="text-center text-gray-500">No notifications available.</p>
+    </ng-template>
+  }
+
+
 </div>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../services/review.service';
 import { PostDTO } from '../services/reviewdtos';
-import { NgForOf, NgIf } from '@angular/common';
 import {ReviewStatus} from '../services/reviewstatus';
 import {ReviewRequest} from '../services/reviewrequests';
 import {FormsModule} from '@angular/forms';
@@ -11,8 +10,6 @@ import {FormsModule} from '@angular/forms';
   templateUrl: './review-post.component.html',
   standalone: true,
   imports: [
-    NgForOf,
-    NgIf,
     FormsModule
   ],
   styleUrls: ['./review-post.component.css']

@@ -6,39 +6,56 @@
     <input formControlName="date" placeholder="Filter by date" class="mb-4 p-2 border rounded">
     <button type="submit" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Filter</button>
   </form>
-  <button *ngIf="isAdmin()" (click)="goToReview()" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Go to Review</button>
-  <ng-container *ngFor="let post of posts;">
-    <mat-card class="mb-4 custom-card" (click)="goToDetail(post.id)">
-      <mat-card-header>
-        <mat-card-title>{{ post.title }}</mat-card-title>
-        <mat-card-subtitle>Author: {{ post.author }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong>Date Created:</strong> {{ post.dateCreated | date }}</p>
-      </mat-card-content>
-    </mat-card>
-  </ng-container>
-  <div *ngIf="posts.length === 0" class="text-center text-gray-500">No posts available.</div>
-</div>
+  @if(isAdmin()){
+    <button (click)="goToReview()" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Go to Review</button>
 
-<div *ngIf="!isUserRoleUser()" class="post-overview p-4">
-  <h1 class="text-2xl font-bold mb-4">Posts in Concept</h1>
-  <button routerLink="/add-post" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Add New Post</button>
-  <ng-container *ngFor="let post of postsInConcept;">
-    <mat-card class="mb-4 custom-card">
-      <mat-card-header>
-        <mat-card-title>{{ post.title }}</mat-card-title>
-        <mat-card-subtitle>Author: {{ post.author }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong>Date Created:</strong> {{ post.dateCreated | date }}</p>
-        <p *ngIf="post.rejectedReason"><strong>Rejected Reason:</strong> {{ post.rejectedReason }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="openEditPage(post.id)">Edit</button>
-        <button mat-button (click)="sendToReview(post.id)" class="bg-blue-500 text-white">Send to Review</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-container>
-  <div *ngIf="postsInConcept.length === 0" class="text-center text-gray-500">No posts available.</div>
-</div>
+  }
+  @for (post of posts; track post.id){
+    <ng-container>
+      <mat-card class="mb-4 custom-card" (click)="goToDetail(post.id)">
+        <mat-card-header>
+          <mat-card-title>{{ post.title }}</mat-card-title>
+          <mat-card-subtitle>Author: {{ post.author }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Date Created:</strong> {{ post.dateCreated | date }}</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  }
+
+  @if(posts.length === 0){
+    <div class="text-center text-gray-500">No posts available.</div>
+
+  }
+  </div>
+
+@if (!isUserRoleUser()){
+  <div class="post-overview p-4">
+    <h1 class="text-2xl font-bold mb-4">Posts in Concept</h1>
+    <button routerLink="/add-post" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Add New Post</button>
+    @for (post of postsInConcept; track post.id){
+      <ng-container>
+        <mat-card class="mb-4 custom-card">
+          <mat-card-header>
+            <mat-card-title>{{ post.title }}</mat-card-title>
+            <mat-card-subtitle>Author: {{ post.author }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p><strong>Date Created:</strong> {{ post.dateCreated | date }}</p>
+            <p *ngIf="post.rejectedReason"><strong>Rejected Reason:</strong> {{ post.rejectedReason }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="openEditPage(post.id)">Edit</button>
+            <button mat-button (click)="sendToReview(post.id)" class="bg-blue-500 text-white">Send to Review</button>
+          </mat-card-actions>
+        </mat-card>
+      </ng-container>
+    }
+    @if (postsInConcept.length === 0){
+      <div class="text-center text-gray-500">No posts available.</div>
+    }
+
+  </div>
+}
+

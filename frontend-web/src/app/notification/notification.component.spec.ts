@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NotificationComponent } from './notification.component';
 import { PostService } from '../services/post-service.service';
@@ -38,7 +38,6 @@ describe('NotificationComponent', () => {
     });
 
     component.ngOnInit();
-    tick(5500);
 
     expect(postService.getNotifications).toHaveBeenCalledWith('1', 'admin');
     expect(component.notifications).toEqual(notifications);
@@ -54,20 +53,10 @@ describe('NotificationComponent', () => {
     spyOn(console, 'error');
 
     component.ngOnInit();
-    tick(5000);
 
     expect(postService.getNotifications).toHaveBeenCalledWith('1', 'admin');
     expect(console.error).toHaveBeenCalledWith('Error fetching notifications', 'Error fetching notifications');
   }));
-
-  it('should unsubscribe on destroy', () => {
-    component.ngOnInit();
-    spyOn(component.subscription!, 'unsubscribe');
-
-    component.ngOnDestroy();
-
-    expect(component.subscription!.unsubscribe).toHaveBeenCalled();
-  });
 
   it('should log error if user information is missing', () => {
     spyOn(localStorage, 'getItem').and.returnValue(null);
