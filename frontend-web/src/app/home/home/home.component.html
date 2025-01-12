@@ -3,7 +3,7 @@
   <form [formGroup]="filterForm" (ngSubmit)="fetchAllPublicPostsAndFilter()">
     <input formControlName="content" placeholder="Filter by content" class="mb-4 p-2 border rounded">
     <input formControlName="author" placeholder="Filter by author" class="mb-4 p-2 border rounded">
-    <input formControlName="date" placeholder="Filter by date" class="mb-4 p-2 border rounded">
+    <input formControlName="date" placeholder="Filter by date like 2025-01-12" class="mb-4 p-2 border rounded">
     <button type="submit" class="bg-violet-600 text-white px-4 py-2 rounded mb-4">Filter</button>
   </form>
   @if(isAdmin()){

@@ -62,7 +62,6 @@ public class PostService implements IPostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new PostsException("Post not found"));
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
-        post.setInConcept(request.isInConcept());
         post.setDateCreated(request.getDateCreated());
         postRepository.save(post);
     }
