@@ -18,4 +18,4 @@ Each folder contains its own specific `.gitignore` file.
 In the backend run the compose.yaml
 Then start the microservices in order (ConfigService,DiscoveryService,GateWayService) after these u can start Review,Post and commentService in a random order
 Frontend can be started using docker run -d -p 80:80 javafullstack-app
-:heavy_check_mark:_(COMMENT) Add setup instructions and provide some direction to run the whole  application: frontend to backend._
+
